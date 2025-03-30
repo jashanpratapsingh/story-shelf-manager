@@ -2,6 +2,7 @@
 package com.bookstore.view;
 
 import com.bookstore.controller.AuthController;
+import com.bookstore.model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,12 +15,24 @@ public class LoginScreen extends JPanel {
     private JPasswordField passwordField;
     private JButton loginButton;
     private AuthController authController;
+    private JFrame parentFrame;
     
     /**
      * Constructor.
      */
     public LoginScreen() {
         this.authController = new AuthController();
+        initializeComponents();
+    }
+    
+    /**
+     * Constructor with parent frame.
+     * 
+     * @param parentFrame The parent JFrame for navigation
+     */
+    public LoginScreen(JFrame parentFrame) {
+        this.authController = new AuthController();
+        this.parentFrame = parentFrame;
         initializeComponents();
     }
     
@@ -82,12 +95,46 @@ public class LoginScreen extends JPanel {
                     "Login successful!",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
-            // The main application frame would handle screen switching based on the authenticated user
+            
+            // Navigate to the appropriate dashboard based on user role
+            navigateToNextScreen();
         } else {
             JOptionPane.showMessageDialog(this,
                     "Invalid username or password",
                     "Login Error",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    /**
+     * Navigates to the next screen based on the user's role.
+     */
+    private void navigateToNextScreen() {
+        if (parentFrame == null) {
+            System.out.println("Parent frame is not set. Cannot navigate.");
+            return;
+        }
+        
+        User currentUser = authController.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("Current user is null. Cannot navigate.");
+            return;
+        }
+        
+        // Clear the current content
+        parentFrame.getContentPane().removeAll();
+        
+        // Add the appropriate dashboard based on user role
+        if (currentUser.getRole() == User.UserRole.OWNER) {
+            parentFrame.getContentPane().add(new OwnerDashboard(parentFrame));
+            parentFrame.setTitle("BookStore - Owner Dashboard");
+        } else {
+            parentFrame.getContentPane().add(new CustomerDashboard(parentFrame));
+            parentFrame.setTitle("BookStore - Customer Dashboard");
+        }
+        
+        // Refresh the frame
+        parentFrame.revalidate();
+        parentFrame.repaint();
     }
 }

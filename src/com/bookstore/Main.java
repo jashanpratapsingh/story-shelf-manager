@@ -34,8 +34,8 @@ public class Main {
             frame.setSize(800, 600);
             frame.setLocationRelativeTo(null);
             
-            // Set the initial screen to the login screen
-            frame.getContentPane().add(new LoginScreen());
+            // Set the initial screen to the login screen and pass the frame for navigation
+            frame.getContentPane().add(new LoginScreen(frame));
             
             frame.setVisible(true);
             
