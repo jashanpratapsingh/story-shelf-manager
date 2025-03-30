@@ -1,0 +1,6 @@
+
+book1,To Kill a Mockingbird,Harper Lee,12.99,10
+book2,1984,George Orwell,9.99,15
+book3,Pride and Prejudice,Jane Austen,11.50,8
+book4,The Great Gatsby,F. Scott Fitzgerald,10.25,12
+book5,Brave New World,Aldous Huxley,13.75,7

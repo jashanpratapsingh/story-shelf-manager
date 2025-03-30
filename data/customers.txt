@@ -1,0 +1,10 @@
+
+CUSTOMER:customer1,johndoe,John Doe
+PASSWORD:password123
+PURCHASE:purchase1,book1,To Kill a Mockingbird,2,25.98,2024-03-15
+PURCHASE:purchase2,book2,1984,1,9.99,2024-03-16
+
+CUSTOMER:customer2,janedoe,Jane Doe
+PASSWORD:securepass456
+PURCHASE:purchase3,book3,Pride and Prejudice,1,11.50,2024-03-17
+PURCHASE:purchase4,book4,The Great Gatsby,1,10.25,2024-03-18
