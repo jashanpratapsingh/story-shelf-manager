@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Book, Users, BarChart3, LogOut } from "lucide-react";
 
 interface OwnerDashboardProps {
   onNavigate: (screen: string) => void;
@@ -14,7 +15,7 @@ const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onNavigate, onLogout })
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">BookStore Admin Dashboard</h1>
         <Button variant="outline" onClick={onLogout}>
-          Logout
+          <LogOut className="h-4 w-4 mr-2" /> Logout
         </Button>
       </div>
       
@@ -26,7 +27,7 @@ const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onNavigate, onLogout })
           <CardContent>
             <p className="mb-4">Add, edit, or remove books from the inventory.</p>
             <Button onClick={() => onNavigate("owner-manage-books")}>
-              Manage Books
+              <Book className="h-4 w-4 mr-2" /> Manage Books
             </Button>
           </CardContent>
         </Card>
@@ -38,7 +39,7 @@ const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onNavigate, onLogout })
           <CardContent>
             <p className="mb-4">Add, edit, or remove customer accounts.</p>
             <Button onClick={() => onNavigate("owner-manage-customers")}>
-              Manage Customers
+              <Users className="h-4 w-4 mr-2" /> Manage Customers
             </Button>
           </CardContent>
         </Card>
@@ -50,7 +51,7 @@ const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onNavigate, onLogout })
           <CardContent>
             <p className="mb-4">View sales statistics and reports.</p>
             <Button onClick={() => onNavigate("owner-view-stats")}>
-              View Statistics
+              <BarChart3 className="h-4 w-4 mr-2" /> View Statistics
             </Button>
           </CardContent>
         </Card>

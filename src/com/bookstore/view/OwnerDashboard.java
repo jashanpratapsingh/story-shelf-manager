@@ -46,18 +46,14 @@ public class OwnerDashboard extends JPanel {
         JPanel contentPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         
-        JButton manageBooksButton = new JButton("Manage Books");
-        manageBooksButton.addActionListener(e -> navigateTo("manage-books"));
+        JButton booksButton = new JButton("Books");
+        booksButton.addActionListener(e -> navigateTo("books"));
         
-        JButton manageCustomersButton = new JButton("Manage Customers");
-        manageCustomersButton.addActionListener(e -> navigateTo("manage-customers"));
+        JButton customersButton = new JButton("Customers");
+        customersButton.addActionListener(e -> navigateTo("customers"));
         
-        JButton viewStatsButton = new JButton("View Statistics");
-        viewStatsButton.addActionListener(e -> navigateTo("view-stats"));
-        
-        contentPanel.add(manageBooksButton);
-        contentPanel.add(manageCustomersButton);
-        contentPanel.add(viewStatsButton);
+        contentPanel.add(booksButton);
+        contentPanel.add(customersButton);
         
         // Add components to the main panel
         add(headerPanel, BorderLayout.NORTH);
@@ -86,10 +82,26 @@ public class OwnerDashboard extends JPanel {
      * @param screen The screen to navigate to
      */
     private void navigateTo(String screen) {
-        // For now, just show a message that this feature is coming soon
-        JOptionPane.showMessageDialog(this,
-                "This feature will be implemented soon!",
-                "Coming Soon",
-                JOptionPane.INFORMATION_MESSAGE);
+        if (parentFrame == null) return;
+        
+        parentFrame.getContentPane().removeAll();
+        
+        switch (screen) {
+            case "books":
+                parentFrame.getContentPane().add(new OwnerBooksScreen(parentFrame));
+                parentFrame.setTitle("BookStore - Manage Books");
+                break;
+            case "customers":
+                parentFrame.getContentPane().add(new OwnerCustomersScreen(parentFrame));
+                parentFrame.setTitle("BookStore - Manage Customers");
+                break;
+            default:
+                parentFrame.getContentPane().add(new OwnerDashboard(parentFrame));
+                parentFrame.setTitle("BookStore - Owner Dashboard");
+                break;
+        }
+        
+        parentFrame.revalidate();
+        parentFrame.repaint();
     }
 }

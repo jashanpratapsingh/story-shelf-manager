@@ -43,5 +43,6 @@ export type AppState = {
     | "owner-view-stats"
     | "customer-dashboard"
     | "customer-browse-books"
-    | "customer-purchase-history";
+    | "customer-purchase-history"
+    | "customer-cost-screen";
 };

@@ -9,6 +9,7 @@ import ManageCustomers from '@/components/ManageCustomers';
 import ViewStats from '@/components/ViewStats';
 import BrowseBooks from '@/components/BrowseBooks';
 import PurchaseHistory from '@/components/PurchaseHistory';
+import CustomerCostScreen from '@/components/CustomerCostScreen';
 import { AppState, Book, Customer, Purchase, User } from '@/lib/types';
 import { loadData, saveData, authenticateUser, initialState } from '@/lib/dataStore';
 import { useToast } from '@/components/ui/use-toast';
@@ -150,10 +151,9 @@ const Index = () => {
     const book = state.books.find(b => b.id === bookId);
     if (!book || book.quantity < quantity) return;
     
-    // Update book quantity
-    const updatedBooks = state.books.map(b => 
-      b.id === bookId ? { ...b, quantity: b.quantity - quantity } : b
-    );
+    // Find the current customer
+    const currentCustomer = state.customers.find(c => c.username === state.currentUser?.username);
+    if (!currentCustomer) return;
     
     // Create purchase record
     const purchase: Purchase = {
@@ -165,17 +165,19 @@ const Index = () => {
       date: new Date().toISOString()
     };
     
-    // Update customer purchase history
-    const updatedCustomers = state.customers.map(customer => 
-      customer.username === state.currentUser?.username
-        ? { ...customer, purchaseHistory: [...customer.purchaseHistory, purchase] }
-        : customer
-    );
+    // Add purchase to the customer's history
+    const updatedCustomer = {
+      ...currentCustomer,
+      purchaseHistory: [...currentCustomer.purchaseHistory, purchase]
+    };
     
+    // Update the customer in the state
     setState(prev => ({
       ...prev,
-      books: updatedBooks,
-      customers: updatedCustomers
+      customers: prev.customers.map(c => 
+        c.id === updatedCustomer.id ? updatedCustomer : c
+      ),
+      currentScreen: 'customer-cost-screen'
     }));
   };
 
@@ -183,6 +185,15 @@ const Index = () => {
   const getCurrentCustomer = (): Customer | null => {
     if (!state.currentUser || state.currentUser.role !== 'customer') return null;
     return state.customers.find(c => c.username === state.currentUser?.username) || null;
+  };
+
+  // Calculate customer points
+  const calculateCustomerPoints = (customer: Customer): number => {
+    if (!customer.purchaseHistory.length) return 0;
+    
+    return customer.purchaseHistory.reduce((total, purchase) => {
+      return total + purchase.totalPrice * 10; // 10 points per CAD
+    }, 0);
   };
 
   // Render the appropriate screen based on currentScreen state
@@ -260,6 +271,17 @@ const Index = () => {
           <PurchaseHistory 
             customer={currentCustomer}
             onBack={() => handleNavigate('customer-dashboard')}
+          />
+        ) : (
+          <div>Error: Customer not found</div>
+        );
+        
+      case 'customer-cost-screen':
+        return currentCustomer ? (
+          <CustomerCostScreen 
+            customer={currentCustomer}
+            points={calculateCustomerPoints(currentCustomer)}
+            onLogout={handleLogout}
           />
         ) : (
           <div>Error: Customer not found</div>
