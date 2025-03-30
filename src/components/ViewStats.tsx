@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Book, Customer, Purchase } from "@/lib/types";
 import { 
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
+} from "@/lib/table";
+import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
 } from 'recharts';
