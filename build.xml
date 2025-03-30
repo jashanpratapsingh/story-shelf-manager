@@ -1,0 +1,44 @@
+
+<project name="BookStore" default="compile" basedir=".">
+    <description>
+        Ant build file for BookStore application
+    </description>
+    
+    <!-- Global properties -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="data" location="data"/>
+    
+    <!-- Initialize target -->
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${data}"/>
+    </target>
+    
+    <!-- Compile target -->
+    <target name="compile" depends="init" description="Compile source code">
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false"/>
+    </target>
+    
+    <!-- Build JAR target -->
+    <target name="jar" depends="compile" description="Create JAR file">
+        <jar destfile="${dist}/BookStore.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="com.bookstore.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- Run target -->
+    <target name="run" depends="jar" description="Run the application">
+        <java jar="${dist}/BookStore.jar" fork="true"/>
+    </target>
+    
+    <!-- Clean target -->
+    <target name="clean" description="Clean up">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>
