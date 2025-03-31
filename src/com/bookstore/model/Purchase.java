@@ -64,6 +64,11 @@ public class Purchase {
     
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+        // Update totalPrice based on the new quantity
+        if (totalPrice > 0 && quantity > 0) {
+            double pricePerItem = totalPrice / (quantity - 1);
+            this.totalPrice = pricePerItem * quantity;
+        }
     }
     
     public double getTotalPrice() {
@@ -84,6 +89,7 @@ public class Purchase {
     
     /**
      * Gets the price of a single book (total price divided by quantity).
+     * @return The price per book, or 0 if quantity is 0
      */
     public double getPrice() {
         return quantity > 0 ? totalPrice / quantity : 0;
@@ -91,6 +97,7 @@ public class Purchase {
     
     /**
      * Sets the price of a single book and updates the total price accordingly.
+     * @param price The price per book
      */
     public void setPrice(double price) {
         this.totalPrice = price * this.quantity;
