@@ -9,6 +9,14 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="data" location="data"/>
+    <property name="lib" location="lib"/>
+    
+    <!-- Classpath for JavaFX -->
+    <path id="javafx.classpath">
+        <fileset dir="${java.home}/lib">
+            <include name="javafx*.jar"/>
+        </fileset>
+    </path>
     
     <!-- Initialize target -->
     <target name="init">
@@ -19,21 +27,43 @@
     
     <!-- Compile target -->
     <target name="compile" depends="init" description="Compile source code">
-        <javac srcdir="${src}" destdir="${build}" includeantruntime="false"/>
+        <javac 
+            srcdir="${src}" 
+            destdir="${build}" 
+            includeantruntime="false"
+            modulepath="${java.home}/lib/javafx-sdk/lib"
+        >
+            <classpath refid="javafx.classpath"/>
+        </javac>
+        
+        <!-- Copy resource files if any -->
+        <copy todir="${build}">
+            <fileset dir="${src}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.kt"/>
+            </fileset>
+        </copy>
     </target>
     
     <!-- Build JAR target -->
     <target name="jar" depends="compile" description="Create JAR file">
         <jar destfile="${dist}/BookStore.jar" basedir="${build}">
             <manifest>
-                <attribute name="Main-Class" value="com.bookstore.Main"/>
+                <attribute name="Main-Class" value="com.bookstore.MainApp"/>
+                <attribute name="Class-Path" value="."/>
             </manifest>
         </jar>
     </target>
     
     <!-- Run target -->
     <target name="run" depends="jar" description="Run the application">
-        <java jar="${dist}/BookStore.jar" fork="true"/>
+        <java 
+            jar="${dist}/BookStore.jar" 
+            fork="true"
+            modulepath="${java.home}/lib/javafx-sdk/lib"
+        >
+            <classpath refid="javafx.classpath"/>
+        </java>
     </target>
     
     <!-- Clean target -->
@@ -42,3 +72,4 @@
         <delete dir="${dist}"/>
     </target>
 </project>
+
