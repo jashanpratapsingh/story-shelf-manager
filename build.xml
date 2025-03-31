@@ -11,13 +11,6 @@
     <property name="data" location="data"/>
     <property name="lib" location="lib"/>
     
-    <!-- Classpath for JavaFX -->
-    <path id="javafx.classpath">
-        <fileset dir="${java.home}/lib">
-            <include name="javafx*.jar"/>
-        </fileset>
-    </path>
-    
     <!-- Initialize target -->
     <target name="init">
         <mkdir dir="${build}"/>
@@ -31,9 +24,7 @@
             srcdir="${src}" 
             destdir="${build}" 
             includeantruntime="false"
-            modulepath="${java.home}/lib/javafx-sdk/lib"
         >
-            <classpath refid="javafx.classpath"/>
         </javac>
         
         <!-- Copy resource files if any -->
@@ -49,7 +40,7 @@
     <target name="jar" depends="compile" description="Create JAR file">
         <jar destfile="${dist}/BookStore.jar" basedir="${build}">
             <manifest>
-                <attribute name="Main-Class" value="com.bookstore.MainApp"/>
+                <attribute name="Main-Class" value="com.bookstore.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
         </jar>
@@ -60,9 +51,7 @@
         <java 
             jar="${dist}/BookStore.jar" 
             fork="true"
-            modulepath="${java.home}/lib/javafx-sdk/lib"
         >
-            <classpath refid="javafx.classpath"/>
         </java>
     </target>
     
@@ -72,4 +61,3 @@
         <delete dir="${dist}"/>
     </target>
 </project>
-
