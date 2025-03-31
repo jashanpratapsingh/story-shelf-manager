@@ -53,7 +53,7 @@ public class CustomerCostView extends VBox {
         // Create points and status label
         String status = points >= 1000 ? "Gold" : "Silver";
         Label pointsLabel = new Label("Points: " + points + ", Status: " + status);
-        pointsLabel.setFont(Font.font("Arial", Font.PLAIN, 16));
+        pointsLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         
         // Create logout button
         Button logoutButton = new Button("Logout");
